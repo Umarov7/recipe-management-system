@@ -72,7 +72,11 @@ func (r *UserRepo) Update(ctx context.Context, user *models.NewUserData) error {
 		return errors.Wrap(err, "failed to update user")
 	}
 
-	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 0 {
+	n, err := res.RowsAffected()
+	if err != nil {
+		return errors.Wrap(err, "failed to get rows affected")
+	}
+	if n < 1 {
 		return errors.New("user not found")
 	}
 
@@ -94,7 +98,11 @@ func (r *UserRepo) Delete(ctx context.Context, id string) error {
 		return errors.Wrap(err, "failed to delete user")
 	}
 
-	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 0 {
+	n, err := res.RowsAffected()
+	if err != nil {
+		return errors.Wrap(err, "failed to get rows affected")
+	}
+	if n < 1 {
 		return errors.New("user not found")
 	}
 

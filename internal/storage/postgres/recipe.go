@@ -163,7 +163,11 @@ func (r *RecipeRepo) Update(ctx context.Context, in *models.NewRecipeData) error
 		return errors.Wrap(err, "failed to update recipe")
 	}
 
-	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 0 {
+	n, err := res.RowsAffected()
+	if err != nil {
+		return errors.Wrap(err, "failed to get rows affected")
+	}
+	if n < 1 {
 		return errors.New("recipe not found")
 	}
 
@@ -183,7 +187,11 @@ func (r *RecipeRepo) Delete(ctx context.Context, id string) error {
 		return errors.Wrap(err, "failed to delete recipe")
 	}
 
-	if rowsAffected, _ := res.RowsAffected(); rowsAffected == 0 {
+	n, err := res.RowsAffected()
+	if err != nil {
+		return errors.Wrap(err, "failed to get rows affected")
+	}
+	if n < 1 {
 		return errors.New("recipe not found")
 	}
 
@@ -218,6 +226,7 @@ func (r *RecipeRepo) Fetch(ctx context.Context, f *models.RecipeFilter) ([]*mode
 
 		recipes = append(recipes, &rec)
 	}
+	defer rows.Close()
 
 	return recipes, nil
 }
