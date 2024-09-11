@@ -1,11 +1,14 @@
 package api
 
 import (
+	_ "recipe-management/internal/api/docs"
 	"log/slog"
 	"recipe-management/internal/api/handler"
 	"recipe-management/internal/storage"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title Recipe Management System
@@ -17,6 +20,7 @@ import (
 func NewRouter(storage storage.IStorage, logger *slog.Logger) *gin.Engine {
 	h := handler.NewHandler(storage, logger)
 	router := gin.Default()
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.POST("/recipes", h.Add)
 	router.GET("/recipes/:id", h.Get)
