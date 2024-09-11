@@ -3,7 +3,6 @@ package postgres
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
 	"recipe-management/internal/models"
 	"recipe-management/internal/storage"
@@ -39,7 +38,7 @@ func (r *RecipeRepo) Create(ctx context.Context, in *models.NewRecipe) (string, 
 
 	query1 := `
 	insert into recipes
-		(user_id, category, title, description, instructions, prep_time, cook_time, servings)
+		(category, title, description, instructions, prep_time, cook_time, servings)
 	values
 		($1, $2, $3, $4, $5, $6, $7, $8)
 	returning id
@@ -53,7 +52,7 @@ func (r *RecipeRepo) Create(ctx context.Context, in *models.NewRecipe) (string, 
 	`
 
 	var id string
-	err = tx.QueryRowContext(ctx, query1, in.UserID, in.Category, in.Title, in.Description,
+	err = tx.QueryRowContext(ctx, query1, in.Category, in.Title, in.Description,
 		in.Instructions, in.PrepTime, in.CookTime, in.Servings).Scan(&id)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to add recipe")
@@ -72,7 +71,7 @@ func (r *RecipeRepo) Create(ctx context.Context, in *models.NewRecipe) (string, 
 func (r *RecipeRepo) Read(ctx context.Context, id string) (*models.Recipe, error) {
 	query1 := `
 	select
-		user_id, category, title, description, instructions,
+		category, title, description, instructions,
 		prep_time, cook_time, servings, created_at, updated_at
 	from
 		recipes
@@ -90,7 +89,7 @@ func (r *RecipeRepo) Read(ctx context.Context, id string) (*models.Recipe, error
 	`
 
 	rec := models.Recipe{ID: id}
-	err := r.db.QueryRowContext(ctx, query1, id).Scan(&rec.UserID, &rec.Category, &rec.Title,
+	err := r.db.QueryRowContext(ctx, query1, id).Scan(&rec.Category, &rec.Title,
 		&rec.Description, &rec.Instructions, &rec.PrepTime, &rec.CookTime,
 		&rec.Servings, &rec.CreatedAt, &rec.UpdatedAt,
 	)
@@ -198,20 +197,16 @@ func (r *RecipeRepo) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (r *RecipeRepo) Fetch(ctx context.Context, f *models.RecipeFilter) ([]*models.RecipeInfo, error) {
+func (r *RecipeRepo) Fetch(ctx context.Context, p *models.Pagination) ([]*models.RecipeInfo, error) {
 	query := `
 	select
-		id, user_id, category, title, description
+		id, category, title, description
 	from
 		recipes
+	limit $1 offset $2
 	`
 
-	if f.UserID != "" {
-		query += " where user_id = $1"
-	}
-	query += fmt.Sprintf(" limit %d offset %d", f.Limit, f.Offset)
-
-	rows, err := r.db.QueryContext(ctx, query)
+	rows, err := r.db.QueryContext(ctx, query, p.Limit, p.Offset)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to read recipes")
 	}
@@ -219,7 +214,7 @@ func (r *RecipeRepo) Fetch(ctx context.Context, f *models.RecipeFilter) ([]*mode
 	var recipes []*models.RecipeInfo
 	for rows.Next() {
 		var rec models.RecipeInfo
-		err = rows.Scan(&rec.ID, &rec.UserID, &rec.Category, &rec.Title, &rec.Description)
+		err = rows.Scan(&rec.ID, &rec.Category, &rec.Title, &rec.Description)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to fetch recipe")
 		}

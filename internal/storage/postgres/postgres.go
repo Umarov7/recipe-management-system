@@ -14,10 +14,6 @@ type Storage struct {
 	db *sql.DB
 }
 
-func (s *Storage) User() storage.IUserStorage {
-	return NewUserRepo(s.db)
-}
-
 func (s *Storage) Recipe() storage.IRecipeStorage {
 	return NewRecipeRepo(s.db)
 }

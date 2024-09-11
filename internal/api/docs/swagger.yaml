@@ -1,0 +1,235 @@
+basePath: /recipes
+definitions:
+  models.Ingredient:
+    properties:
+      name:
+        type: string
+      quantity:
+        type: string
+      unit:
+        type: string
+    type: object
+  models.NewRecipe:
+    properties:
+      category:
+        type: string
+      cook_time:
+        type: integer
+      description:
+        type: string
+      ingredients:
+        items:
+          $ref: '#/definitions/models.Ingredient'
+        type: array
+      instructions:
+        type: string
+      prep_time:
+        type: integer
+      servings:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.NewRecipeDataNoID:
+    properties:
+      category:
+        type: string
+      cook_time:
+        type: integer
+      description:
+        type: string
+      ingredients:
+        items:
+          $ref: '#/definitions/models.Ingredient'
+        type: array
+      instructions:
+        type: string
+      prep_time:
+        type: integer
+      servings:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.Recipe:
+    properties:
+      category:
+        type: string
+      cook_time:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      ingredients:
+        items:
+          $ref: '#/definitions/models.Ingredient'
+        type: array
+      instructions:
+        type: string
+      prep_time:
+        type: integer
+      servings:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.RecipeInfo:
+    properties:
+      category:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API for Recipe Management System
+  title: Recipe Management System
+  version: "1.0"
+paths:
+  /:
+    get:
+      description: Lists all recipes, paginated
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: limit
+        type: integer
+      responses:
+        "200":
+          description: Recipes
+          schema:
+            items:
+              $ref: '#/definitions/models.RecipeInfo'
+            type: array
+        "400":
+          description: Invalid pagination parameters
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      summary: Lists all recipes
+      tags:
+      - recipes
+    post:
+      description: Adds a new recipe
+      parameters:
+      - description: New recipe data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.NewRecipe'
+      responses:
+        "201":
+          description: New recipe ID
+          schema:
+            type: string
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      summary: Adds a new recipe
+      tags:
+      - recipes
+  /{id}:
+    delete:
+      description: Deletes a recipe by ID
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Recipe deleted
+          schema:
+            type: string
+        "400":
+          description: Recipe ID is required
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      summary: Deletes a recipe by ID
+      tags:
+      - recipes
+    get:
+      description: Gets a recipe by ID
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Recipe'
+        "400":
+          description: Recipe ID is required
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      summary: Gets a recipe by ID
+      tags:
+      - recipes
+    put:
+      description: Updates a recipe
+      parameters:
+      - description: Recipe ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Recipe data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.NewRecipeDataNoID'
+      responses:
+        "200":
+          description: Recipe updated
+          schema:
+            type: string
+        "400":
+          description: Invalid data format
+          schema:
+            type: string
+        "500":
+          description: Server error while processing request
+          schema:
+            type: string
+      summary: Updates a recipe
+      tags:
+      - recipes
+schemes:
+- http
+swagger: "2.0"

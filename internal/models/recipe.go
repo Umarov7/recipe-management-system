@@ -1,7 +1,6 @@
 package models
 
 type NewRecipe struct {
-	UserID       string       `json:"user_id"`
 	Category     string       `json:"category"`
 	Title        string       `json:"title"`
 	Description  string       `json:"description"`
@@ -24,9 +23,19 @@ type NewRecipeData struct {
 	Servings     int          `json:"servings"`
 }
 
+type NewRecipeDataNoID struct {
+	Category     string       `json:"category"`
+	Title        string       `json:"title"`
+	Description  string       `json:"description"`
+	Ingredients  []Ingredient `json:"ingredients"`
+	Instructions string       `json:"instructions"`
+	PrepTime     int          `json:"prep_time"`
+	CookTime     int          `json:"cook_time"`
+	Servings     int          `json:"servings"`
+}
+
 type Recipe struct {
 	ID           string       `json:"id"`
-	UserID       string       `json:"user_id"`
 	Category     string       `json:"category"`
 	Title        string       `json:"title"`
 	Description  string       `json:"description"`
@@ -45,15 +54,13 @@ type Ingredient struct {
 	Unit     string `json:"unit"`
 }
 
-type RecipeFilter struct {
-	UserID string `json:"user_id"`
-	Limit  int    `json:"limit"`
-	Offset int    `json:"offset"`
+type Pagination struct {
+	Limit  int `json:"limit"`
+	Offset int `json:"offset"`
 }
 
 type RecipeInfo struct {
 	ID          string `json:"id"`
-	UserID      string `json:"user_id"`
 	Category    string `json:"category"`
 	Title       string `json:"title"`
 	Description string `json:"description"`

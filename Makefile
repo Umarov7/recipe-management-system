@@ -3,7 +3,7 @@ DB_URL=postgres://postgres:root@localhost:5432/recipe_management?sslmode=disable
 tidy:
 	go mod tidy
 swag-gen:
-	~/go/bin/swag init -g ./api/router.go -o api/docs
+	~/go/bin/swag init -g ./internal/api/router.go -o internal/api/docs
 run :
 	go run cmd/main.go
 
