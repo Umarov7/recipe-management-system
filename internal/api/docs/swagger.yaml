@@ -5,7 +5,7 @@ definitions:
       name:
         type: string
       quantity:
-        type: string
+        type: number
       unit:
         type: string
     type: object
@@ -103,10 +103,12 @@ paths:
       - description: Page number
         in: query
         name: page
+        required: true
         type: integer
       - description: Number of items per page
         in: query
         name: limit
+        required: true
         type: integer
       responses:
         "200":

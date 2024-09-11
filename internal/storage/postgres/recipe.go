@@ -40,7 +40,7 @@ func (r *RecipeRepo) Create(ctx context.Context, in *models.NewRecipe) (string, 
 	insert into recipes
 		(category, title, description, instructions, prep_time, cook_time, servings)
 	values
-		($1, $2, $3, $4, $5, $6, $7, $8)
+		($1, $2, $3, $4, $5, $6, $7)
 	returning id
 	`
 

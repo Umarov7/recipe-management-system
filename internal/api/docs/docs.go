@@ -27,13 +27,15 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Page number",
                         "name": "page",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "integer",
                         "description": "Number of items per page",
                         "name": "limit",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -227,7 +229,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "quantity": {
-                    "type": "string"
+                    "type": "number"
                 },
                 "unit": {
                     "type": "string"

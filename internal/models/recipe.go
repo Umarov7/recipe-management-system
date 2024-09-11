@@ -50,7 +50,7 @@ type Recipe struct {
 
 type Ingredient struct {
 	Name     string `json:"name"`
-	Quantity string `json:"quantity"`
+	Quantity float32 `json:"quantity"`
 	Unit     string `json:"unit"`
 }
 

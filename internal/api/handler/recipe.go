@@ -139,8 +139,8 @@ func (h *Handler) Delete(c *gin.Context) {
 // @Summary Lists all recipes
 // @Description Lists all recipes, paginated
 // @Tags recipes
-// @Param page query int false "Page number"
-// @Param limit query int false "Number of items per page"
+// @Param page query int true "Page number"
+// @Param limit query int true "Number of items per page"
 // @Success 200 {array} models.RecipeInfo "Recipes"
 // @Failure 400 {object} string "Invalid pagination parameters"
 // @Failure 500 {object} string "Server error while processing request"
