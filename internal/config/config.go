@@ -10,6 +10,8 @@ import (
 
 type Config struct {
 	ROUTER_ADDRESS string
+	CACHE_SIZE     int
+	CACHE_TIME     int // in seconds
 	DB_HOST        string
 	DB_PORT        string
 	DB_USER        string
@@ -29,6 +31,8 @@ func Load() *Config {
 
 	return &Config{
 		ROUTER_ADDRESS: cast.ToString(coalesce("ROUTER_ADDRESS", "localhost:8080")),
+		CACHE_SIZE:     cast.ToInt(coalesce("CACHE_SIZE", 1024)),
+		CACHE_TIME:     cast.ToInt(coalesce("CACHE_TIME", 60)),
 		DB_HOST:        cast.ToString(coalesce("DB_HOST", "localhost")),
 		DB_PORT:        cast.ToString(coalesce("DB_PORT", "5432")),
 		DB_USER:        cast.ToString(coalesce("DB_USER", "postgres")),

@@ -17,6 +17,6 @@ func main() {
 	}
 	defer storage.Close()
 
-	router := api.NewRouter(storage, logger)
+	router := api.NewRouter(cfg, logger, storage)
 	router.Run(cfg.ROUTER_ADDRESS)
 }
