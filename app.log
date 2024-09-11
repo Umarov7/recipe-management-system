@@ -1,6 +1,0 @@
-time=2024-09-11T18:51:01.752+05:00 level=ERROR msg="invalid pagination parameters"
-time=2024-09-11T18:52:34.407+05:00 level=ERROR msg="failed to add recipe: pq: INSERT has more expressions than target columns"
-time=2024-09-11T18:53:23.923+05:00 level=ERROR msg="failed to add ingredients: pq: invalid input syntax for type numeric: \"string\""
-time=2024-09-11T18:54:59.548+05:00 level=ERROR msg="recipe not found"
-time=2024-09-11T18:55:03.883+05:00 level=ERROR msg="recipe not found"
-time=2024-09-11T18:55:08.704+05:00 level=ERROR msg="recipe not found: sql: no rows in result set"
